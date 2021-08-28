@@ -12,22 +12,20 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello from Go Traffic Producer")
 }
 
-func test(w http.ResponseWriter, r *http.Request) {
-	req := Getter{Url: "http://server:5000/WeatherForecast"}
-	reqAsync := GetterAsync{Req: req}
-	params := TrafficerParams{}
-	params.DefaultParams()
-	trafficer := Trafficer{}
+func rawStatsHandler(w http.ResponseWriter, r *http.Request) {
+	const baseUrl string = "http://server:5000/"
+	var url string
+	query := r.URL.Query()
 
-	stats := trafficer.MakeTraffic(reqAsync, params)
+	endpointName, epExists := query["endpoint"]
 
-	for _, stat := range stats {
-		fmt.Fprintf(w, stat.String())
+	if !epExists || epExists && len(endpointName) == 0 {
+		url = baseUrl + "WeatherForecast"
+	} else {
+		url = baseUrl + endpointName[0]
 	}
-}
 
-func test2(w http.ResponseWriter, r *http.Request) {
-	req := Getter{Url: "http://server:5000/test"}
+	req := Getter{Url: url}
 	reqAsync := GetterAsync{Req: req}
 	params := TrafficerParams{}
 	params.DefaultParams()
@@ -65,8 +63,7 @@ func main() {
 
 	http.HandleFunc("/", hello)
 	http.HandleFunc("/wf", getWeatherForecast)
-	http.HandleFunc("/test", test)
-	http.HandleFunc("/test2", test2)
+	http.HandleFunc("/raw", rawStatsHandler)
 
 	fmt.Printf("Listening on %d...", *port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))

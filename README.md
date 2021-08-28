@@ -14,9 +14,12 @@ docker-compose build
 docker-compose up
 ```
 
+To get raw (not aggregated) results you can use `/raw` endpoint of Traffic Producer. To specify
+which `[GET]` endpoint of the HTTP server just provide `endpoint` URL query value:
+
 ```
-http://localhost:8888/test
+http://localhost:8888/raw?endpoint=test
 ```
 
-There is not yet an interface to choose endpoint and control traffic parameters.
+There is not yet an interface to control traffic parameters.
 
