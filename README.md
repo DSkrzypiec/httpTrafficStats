@@ -21,5 +21,12 @@ which `[GET]` endpoint of the HTTP server just provide `endpoint` URL query valu
 http://localhost:8888/raw?endpoint=test
 ```
 
+To get statistics (aggregated results) you can use `/agg` endpoint of Traffic Producer. To specify
+which `[GET]` endpoint of the HTTP server just provide `endpoint` URL query value:
+
+```
+http://localhost:8888/agg?endpoint=test2
+```
+
 There is not yet an interface to control traffic parameters.
 

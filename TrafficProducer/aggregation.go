@@ -1,6 +1,9 @@
 package main
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
 type AggBatch struct {
 	BatchId            int
@@ -95,4 +98,10 @@ func selectResponseTimeMsAsFloats(stats []TrafficStats) []float64 {
 	}
 
 	return res
+}
+
+func (ab AggBatch) String() string {
+	return fmt.Sprintf("[%d] Count: %d | Resp Time [50Q]: %f, [95Q]: %f | Resp Bytes [50Q]: %f, [95Q]: %f | Errors: %d\n",
+		ab.BatchId, ab.Count, ab.ResponseTimeMsg50q, ab.ResponseTimeMs95q,
+		ab.ResponseBytes50q, ab.ResponseBytes95q, ab.Errors)
 }
